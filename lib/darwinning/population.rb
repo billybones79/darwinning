@@ -12,6 +12,7 @@ module Darwinning
 
     def initialize(options = {})
       @organism = options.fetch(:organism)
+      @user_id = options.fetch(:user_id)
       @population_size = options.fetch(:population_size)
       @fitness_goal = options.fetch(:fitness_goal)
       @fitness_objective = options.fetch(:fitness_objective, :nullify) # :nullify, :maximize, :minimize
@@ -32,6 +33,7 @@ module Darwinning
 
     def evolve!
       until evolution_over?
+        puts "is this dumb?"
         make_next_generation!
       end
     end
@@ -67,7 +69,12 @@ module Darwinning
 
     def evolution_over?
       # check if the fitness goal or generation limit has been met
+
+      puts "deeeeeeee fucccckk"
+      puts generation
+      puts generations_limit
       if generations_limit > 0
+        puts generation
         generation == generations_limit || goal_attained?
       else
         goal_attained?
@@ -91,6 +98,8 @@ module Darwinning
       fitness_function = @fitness_function
       klass = Class.new(Darwinning::Organism) do
         @name = real_organism.name
+        real_organism.user = @user_id
+        real_organism.try(:generate_geneset)
         @genes = real_organism.genes
       end
     end
@@ -126,7 +135,7 @@ module Darwinning
     end
 
     def build_member
-      member = organism.new
+      member = organism.new(user_id: @user_id)
       unless member.class < Darwinning::Organism
         member.class.genes.each do |gene|
           gene_expression = gene.express

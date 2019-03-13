@@ -7,6 +7,7 @@ module Darwinning
       #   :random_swap
       def initialize(options = {})
         @crossover_method = options.fetch(:crossover_method, :alternating_swap)
+        @organism_options = options.fetch(:organism_options, {})
       end
 
       def evolve(m1, m2)
@@ -32,7 +33,7 @@ module Darwinning
       end
 
       def new_member_from_genotypes(organism_klass, genotypes)
-        new_member = organism_klass.new
+        new_member = organism_klass.new(@organism_options)
         if organism_klass.superclass == Darwinning::Organism
           new_member.genotypes = genotypes
         else

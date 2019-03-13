@@ -34,7 +34,10 @@ module Darwinning
     @genes = []  # Gene instances
     @name = ""
 
+    attr_accessor :genes
+
     def initialize(genotypes = {})
+
       if genotypes == {}
         # fill genotypes with expressed Genes
         @genotypes = {}
@@ -53,9 +56,7 @@ module Darwinning
       self.class.name
     end
 
-    def genes
-      self.class.genes
-    end
+
   end
 
 end
