@@ -34,9 +34,13 @@ module Darwinning
         gene = member.genes[random_index]
 
         if member.class.superclass == Darwinning::Organism
-          member.genotypes[gene] = gene.express
+          member.genotypes[gene.name] = gene.express
+          if member.genotypes[gene.name] == nil
+            byebug
+          end
         else
           member.send("#{gene.name}=", gene.express)
+
         end
 
         member

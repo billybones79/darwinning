@@ -36,9 +36,12 @@ module Darwinning
         new_member = organism_klass.new(@organism_options)
         if organism_klass.superclass == Darwinning::Organism
           new_member.genotypes = genotypes
+          if new_member.genotypes.values.include? nil
+            byebug
+          end
         else
           new_member.genes.each do |gene|
-            new_member.send("#{gene.name}=", genotypes[gene])
+            new_member.send("#{gene.name}=", genotypes[gene.name])
           end
         end
         new_member
@@ -50,11 +53,11 @@ module Darwinning
 
         m1.genes.each_with_index do |gene, i|
           if i % 2 == 0
-            genotypes1[gene] = m1.genotypes[gene]
-            genotypes2[gene] = m2.genotypes[gene]
+            genotypes1[gene.name] = m1.genotypes[gene.name]
+            genotypes2[gene.name] = m2.genotypes[gene.name]
           else
-            genotypes1[gene] = m2.genotypes[gene]
-            genotypes2[gene] = m1.genotypes[gene]
+            genotypes1[gene.name] = m2.genotypes[gene.name]
+            genotypes2[gene.name] = m1.genotypes[gene.name]
           end
         end
 
@@ -69,8 +72,12 @@ module Darwinning
           g1_parent = [m1,m2].sample
           g2_parent = [m1,m2].sample
 
-          genotypes1[gene] = g1_parent.genotypes[gene]
-          genotypes2[gene] = g2_parent.genotypes[gene]
+          genotypes1[gene.name] = g1_parent.genotypes[gene.name]
+          genotypes2[gene.name] = g2_parent.genotypes[gene.name]
+        end
+
+        if genotypes1.values.include?(nil) || genotypes2.values.include?(nil)
+          byebug
         end
 
         [genotypes1, genotypes2]

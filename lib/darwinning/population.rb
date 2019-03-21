@@ -18,7 +18,7 @@ module Darwinning
       @fitness_objective = options.fetch(:fitness_objective, :nullify) # :nullify, :maximize, :minimize
       @generations_limit = options.fetch(:generations_limit, 0)
       @evolution_types = options.fetch(:evolution_types, DEFAULT_EVOLUTION_TYPES)
-      @members = []
+      @members = options[:starting_members] || []
       @generation = 0 # initial population is generation 0
       @history = []
 
@@ -26,7 +26,7 @@ module Darwinning
     end
 
     def build_population(population_size)
-      population_size.times do |i|
+      (population_size - @members.length).times do |i|
         @members << build_member
       end
     end
@@ -47,7 +47,6 @@ module Darwinning
     def make_next_generation!
       verify_population_size_is_positive!
       sort_members
-      @history << @members
 
       new_members = []
 
@@ -83,6 +82,10 @@ module Darwinning
 
     def best_member
       @members.first
+    end
+
+    def best_of_all_time x=1
+      @history.flatten.uniq{|a| a.genotypes.values}.sort{ |m| m.fitness}.reverse[0..(x-1)]
     end
 
     def best_each_generation
