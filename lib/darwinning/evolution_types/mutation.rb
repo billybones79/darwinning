@@ -35,9 +35,7 @@ module Darwinning
 
         if member.class.superclass == Darwinning::Organism
           member.genotypes[gene.name] = gene.express
-          if member.genotypes[gene.name] == nil
-            byebug
-          end
+      
         else
           member.send("#{gene.name}=", gene.express)
 

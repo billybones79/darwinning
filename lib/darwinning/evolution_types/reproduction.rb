@@ -36,9 +36,7 @@ module Darwinning
         new_member = organism_klass.new(@organism_options)
         if organism_klass.superclass == Darwinning::Organism
           new_member.genotypes = genotypes
-          if new_member.genotypes.values.include? nil
-            byebug
-          end
+
         else
           new_member.genes.each do |gene|
             new_member.send("#{gene.name}=", genotypes[gene.name])
@@ -76,9 +74,6 @@ module Darwinning
           genotypes2[gene.name] = g2_parent.genotypes[gene.name]
         end
 
-        if genotypes1.values.include?(nil) || genotypes2.values.include?(nil)
-          byebug
-        end
 
         [genotypes1, genotypes2]
       end
