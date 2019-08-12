@@ -33,7 +33,6 @@ module Darwinning
 
     def evolve!
       until evolution_over?
-        puts "is this dumb?"
         make_next_generation!
       end
     end
@@ -60,8 +59,9 @@ module Darwinning
       # In the case of an odd population size, we likely added one too many members.
       new_members.pop if new_members.length > members.length
 
-      @members = apply_non_pairwise_evolutions(new_members)
+      @members += apply_non_pairwise_evolutions(new_members)
       sort_members
+        @members =   @members[0..20]
       @history << @members
       @generation += 1
     end
@@ -69,9 +69,6 @@ module Darwinning
     def evolution_over?
       # check if the fitness goal or generation limit has been met
 
-      puts "deeeeeeee fucccckk"
-      puts generation
-      puts generations_limit
       if generations_limit > 0
         puts generation
         generation == generations_limit || goal_attained?
