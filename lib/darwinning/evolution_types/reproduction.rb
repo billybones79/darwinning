@@ -42,6 +42,7 @@ module Darwinning
             new_member.send("#{gene.name}=", genotypes[gene.name])
           end
         end
+
         new_member
       end
 

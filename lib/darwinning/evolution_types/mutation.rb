@@ -19,13 +19,15 @@ module Darwinning
       protected
 
       def mutate(members)
-        members.map do |member|
+        m =  members.map do |member|
           if rand < mutation_rate
             re_express_random_genotype(member)
           else
             member
           end
         end
+
+        m
       end
 
       # Selects a random genotype from the organism and re-expresses its gene
@@ -35,11 +37,12 @@ module Darwinning
 
         if member.class.superclass == Darwinning::Organism
           member.genotypes[gene.name] = gene.express
-      
+
         else
           member.send("#{gene.name}=", gene.express)
 
         end
+
 
         member
       end
